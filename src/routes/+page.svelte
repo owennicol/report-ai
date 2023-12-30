@@ -87,13 +87,17 @@
 		<div class="" bind:this={scrollToDiv} />
 	</div>
 	<form
-		class="flex w-full rounded-md gap-4 bg-gray-900 p-4 align-middle items-center"
+		class="flex flex-col md:flex-row w-full rounded-md gap-4 bg-gray-900 p-4 align-middle items-center"
 		on:submit|preventDefault={() => handleSubmit()}
 	>
-		<label for="child-name" class="min-w-fit">Child's name:</label>
-		<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
-		<label for="child-name" class="min-w-fit">Attributes:</label>
-		<input type="text" class="input input-bordered w-full" bind:value={attributes} />
-		<button type="submit" class="btn btn-accent">Go</button>
+		<div class="w-full">
+			<label for="child-name" class="w-full mb-1 flex">Child's name:</label>
+			<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
+		</div>
+		<div class="w-full">
+			<label for="child-name" class="w-full mb-1 flex">Attributes:</label>
+			<input type="text" class="input input-bordered w-full" bind:value={attributes} />
+		</div>
+		<button type="submit" class="btn btn-accent w-full md:w-auto self-end">Go</button>
 	</form>
 </div>
