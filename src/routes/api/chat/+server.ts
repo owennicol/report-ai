@@ -61,11 +61,11 @@ export const POST: RequestHandler = async ({ request }) => {
 
 			I would like you to respond to a prompt with a full school report. The prompt will be a JSON object, with the child's name as and some attributes about them to build into the report. Do not correct the Child's name as input.
 
-			I would like the report to be broken down into the following subjects: English, Maths, Reading, Literacy, with a single sentence for each subject.
+			I would like the report to be broken down into the following subjects: Phonics, Maths, Reading, Literacy, Topic, PE with two sentences for each subject.
 
 			The report that you author should be provided in plain ASCII text, but the text should include the tags and annotations used in markdown.
 
-			At the end of the report, include a horziontal rule and line break and then the following as a sign off: Thank you, my name is Hannah and I have been your teacher`
+			At the end of the report, include a horziontal rule and line break and then the following as a sign off: It has been a pleasure to teach your child this year and I wish them well in Year 1. Mrs Nicol`
 
 		tokenCount += getTokens(prompt)
 
