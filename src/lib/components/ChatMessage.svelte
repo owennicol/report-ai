@@ -3,6 +3,7 @@
 	import SvelteMarkdown from 'svelte-markdown'
 	export let type: ChatCompletionRequestMessageRoleEnum
 	export let message: string
+	export let prose: boolean = false
 </script>
 
 <div class="chat {type === 'user' ? 'chat-end' : 'chat-start'} justify-end">
@@ -17,7 +18,11 @@
 	<div class="chat-header">
 		{type === 'user' ? 'Me' : 'ReportBot'}
 	</div>
-	<div class="chat-bubble {type === 'user' ? 'chat-bubble-info' : 'chat-bubble'}">
+	<div
+		class="chat-bubble {type === 'user' ? 'chat-bubble-info' : 'chat-bubble'} {prose
+			? 'prose'
+			: ''} "
+	>
 		<SvelteMarkdown source={message} />
 		<!-- {message} -->
 	</div>

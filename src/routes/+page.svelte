@@ -2,9 +2,9 @@
 	import ChatMessage from '$lib/components/ChatMessage.svelte'
 	import type { ChatCompletionRequestMessage } from 'openai'
 	import { SSE } from 'sse.js'
-	import SvelteMarkdown from 'svelte-markdown'
 
 	let query: string = ''
+	let attributes: string[] = ['funny']
 	let answer: string = ''
 	let loading: boolean = false
 	let chatMessages: ChatCompletionRequestMessage[] = []
@@ -18,7 +18,10 @@
 
 	const handleSubmit = async () => {
 		loading = true
-		chatMessages = [...chatMessages, { role: 'user', content: query }]
+		chatMessages = [
+			...chatMessages,
+			{ role: 'user', content: `{ childName: ${query}, attributes: ${attributes}}` }
+		]
 
 		const eventSource = new SSE('/api/chat', {
 			headers: {
@@ -89,7 +92,8 @@
 	>
 		<label for="child-name" class="min-w-fit">Child's name:</label>
 		<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
-		<!-- <input type="text" class="input input-bordered w-full" bind:value={query} /> -->
+		<label for="child-name" class="min-w-fit">Attributes:</label>
+		<input type="text" class="input input-bordered w-full" bind:value={attributes} />
 		<button type="submit" class="btn btn-accent">Go</button>
 	</form>
 </div>
