@@ -87,7 +87,7 @@
 		<div class="" bind:this={scrollToDiv} />
 	</div>
 	<form
-		class="flex flex-col md:flex-row w-full rounded-md gap-4 bg-gray-900 p-4 align-middle items-center"
+		class="flex flex-col md:flex-row w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border"
 		on:submit|preventDefault={() => handleSubmit()}
 	>
 		<div class="w-full">
