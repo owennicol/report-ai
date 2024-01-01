@@ -3,12 +3,15 @@
 	import type { ChatCompletionRequestMessage } from 'openai'
 	import { SSE } from 'sse.js'
 
+	const initialAttributes = ['funny']
+
 	let query: string = ''
-	let attributes: string[] = ['funny']
+	let attributes: string[] = initialAttributes
 	let answer: string = ''
 	let loading: boolean = false
 	let chatMessages: ChatCompletionRequestMessage[] = []
 	let scrollToDiv: HTMLDivElement
+	let childName: string = ''
 
 	function scrollToBottom() {
 		setTimeout(function () {
@@ -18,9 +21,10 @@
 
 	const handleSubmit = async () => {
 		loading = true
+		childName = query
 		chatMessages = [
 			...chatMessages,
-			{ role: 'user', content: `{ childName: ${query}, attributes: ${attributes}}` }
+			{ role: 'user', content: `{ childName: ${childName}, attributes: ${attributes}}` }
 		]
 
 		const eventSource = new SSE('/api/chat', {
@@ -30,7 +34,8 @@
 			payload: JSON.stringify({ messages: chatMessages })
 		})
 
-		// query = ''
+		query = ''
+		attributes = initialAttributes
 
 		eventSource.addEventListener('error', handleError)
 
@@ -74,7 +79,7 @@
 		<div class="flex flex-col gap-2">
 			<ChatMessage type="assistant" message="Please enter the child's full name and attributes" />
 			{#each chatMessages as message}
-				<ChatMessage type={message.role} message={message.content || ''} />
+				<ChatMessage type={message.role} message={message.content || ''} {childName} />
 				<!-- <SvelteMarkdown source={message.content} /> -->
 			{/each}
 			{#if answer}

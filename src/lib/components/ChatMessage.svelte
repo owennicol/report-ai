@@ -4,6 +4,7 @@
 	export let type: ChatCompletionRequestMessageRoleEnum
 	export let message: string
 	export let prose: boolean = false
+	export let childName: string = ''
 </script>
 
 <div class="chat {type === 'user' ? 'chat-end' : 'chat-start'} justify-end">
@@ -23,7 +24,11 @@
 			? 'prose'
 			: ''} "
 	>
-		<SvelteMarkdown source={message} />
+		{#if type === 'user'}
+			Write me a report for {childName}
+		{:else}
+			<SvelteMarkdown source={message} />
+		{/if}
 		<!-- {message} -->
 	</div>
 </div>
