@@ -30,7 +30,7 @@
 			payload: JSON.stringify({ messages: chatMessages })
 		})
 
-		query = ''
+		// query = ''
 
 		eventSource.addEventListener('error', handleError)
 
@@ -72,7 +72,7 @@
 	</div>
 	<div class="h-[500px] w-full bg-slate-600 rounded-md p-4 overflow-y-auto flex flex-col gap-4">
 		<div class="flex flex-col gap-2">
-			<ChatMessage type="assistant" message="Hello, please enter the child's full name" />
+			<ChatMessage type="assistant" message="Please enter the child's full name and attributes" />
 			{#each chatMessages as message}
 				<ChatMessage type={message.role} message={message.content || ''} />
 				<!-- <SvelteMarkdown source={message.content} /> -->
