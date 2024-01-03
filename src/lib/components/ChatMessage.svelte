@@ -24,11 +24,11 @@
 			? 'prose'
 			: ''} "
 	>
-		{#if type === 'user'}
+		<SvelteMarkdown source={message} />
+		<!-- {#if type === 'user'}
 			Write me a report for {childName}
 		{:else}
-			<SvelteMarkdown source={message} />
-		{/if}
+		{/if} -->
 		<!-- {message} -->
 	</div>
 </div>

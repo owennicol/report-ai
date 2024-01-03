@@ -7,11 +7,10 @@
 
 	const initialAttributes = ['funny']
 
-	const subjects = allSubjects.reduce((acc, curr) => {
-		return { ...acc, [curr]: [] }
-	}, {}) as Record<Subjects, string[]>
-
-	console.log('====> subjects:', subjects)
+	const subjects = new Map<Subjects, string[]>()
+	allSubjects.forEach((subject) => {
+		subjects.set(subject, ['terrible'])
+	})
 
 	let query: string = ''
 	let attributes: string[] = initialAttributes
@@ -28,11 +27,18 @@
 	}
 
 	const handleSubmit = async () => {
+		const subjectsString = [...subjects].reduce((acc, [subject, values]) => {
+			acc += `{${subject}: ${values.join(', ')}}, `
+			return acc
+		}, '')
+
+		console.log('====> subjectsString:', subjectsString)
+
 		loading = true
 		childName = query
 		chatMessages = [
 			...chatMessages,
-			{ role: 'user', content: `{ childName: ${childName}, attributes: ${attributes}}` }
+			{ role: 'user', content: `{ childName: ${childName}, ${subjectsString}}` }
 		]
 
 		const eventSource = new SSE('/api/chat', {
@@ -111,10 +117,10 @@
 			<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
 		</div>
 		<div class="grid grid-cols-2 gap-4 w-full">
-			{#each Object.keys(subjects) as subject}
+			{#each [...subjects] as [subject, value]}
 				<div class="flex flex-col flex-shrink-0">
 					<label for={subject} class="w-full mb-1 flex">{subject}:</label>
-					<input type="text" class="input input-bordered w-full" bind:value={subject} />
+					<input type="text" class="input input-bordered w-full" bind:value />
 				</div>
 			{/each}
 		</div>
