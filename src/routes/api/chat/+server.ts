@@ -4,10 +4,12 @@ import type { RequestHandler } from './$types'
 import { getTokens } from '$lib/tokenizer'
 import { json } from '@sveltejs/kit'
 import type { Config } from '@sveltejs/adapter-vercel'
+import { allSubjects } from '../../../utils/utils'
 
 export const config: Config = {
 	runtime: 'edge'
 }
+
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
@@ -62,7 +64,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			I would like you to respond to a prompt with a full school report, written using UK English spellings and punctuation. The prompt will be a JSON object, with the child's name as and some attributes about them to build into the report. Do not correct the Child's name as input.
 
 			If you are not confident of the child's gender, use "they" and "them" as pronouns.
-			I would like the report to be broken down into the following subjects: Phonics, Maths, Reading, Literacy, Topic, PE with two sentences for each subject.
+			I would like the report to be broken down into the following subjects: ${allSubjects.join(', ')} with two sentences for each subject.
 
 			The report that you author should be provided in plain ASCII text, but the text should include the tags and annotations used in markdown. Each heading should have an h2 tag, and each paragraph should have an p tag.
 

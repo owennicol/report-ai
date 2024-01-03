@@ -2,8 +2,16 @@
 	import ChatMessage from '$lib/components/ChatMessage.svelte'
 	import type { ChatCompletionRequestMessage } from 'openai'
 	import { SSE } from 'sse.js'
+	import { allSubjects } from '../utils/utils'
+	import type { Subjects } from '../types/types'
 
 	const initialAttributes = ['funny']
+
+	const subjects = allSubjects.reduce((acc, curr) => {
+		return { ...acc, [curr]: [] }
+	}, {}) as Record<Subjects, string[]>
+
+	console.log('====> subjects:', subjects)
 
 	let query: string = ''
 	let attributes: string[] = initialAttributes
@@ -77,7 +85,10 @@
 	</div>
 	<div class="h-[500px] w-full bg-slate-600 rounded-md p-4 overflow-y-auto flex flex-col gap-4">
 		<div class="flex flex-col gap-2">
-			<ChatMessage type="assistant" message="Please enter the child's full name and attributes" />
+			<ChatMessage
+				type="assistant"
+				message="Hello, please enter the child's full name and attributes"
+			/>
 			{#each chatMessages as message}
 				<ChatMessage type={message.role} message={message.content || ''} {childName} />
 				<!-- <SvelteMarkdown source={message.content} /> -->
@@ -92,17 +103,21 @@
 		<div class="" bind:this={scrollToDiv} />
 	</div>
 	<form
-		class="flex flex-col md:flex-row w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border dark:border-gray-900"
+		class="flex flex-col w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border dark:border-gray-900"
 		on:submit|preventDefault={() => handleSubmit()}
 	>
 		<div class="w-full">
 			<label for="child-name" class="w-full mb-1 flex">Child's name:</label>
 			<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
 		</div>
-		<div class="w-full">
-			<label for="child-name" class="w-full mb-1 flex">Attributes:</label>
-			<input type="text" class="input input-bordered w-full" bind:value={attributes} />
+		<div class="grid grid-cols-2 gap-4 w-full">
+			{#each Object.keys(subjects) as subject}
+				<div class="flex flex-col flex-shrink-0">
+					<label for={subject} class="w-full mb-1 flex">{subject}:</label>
+					<input type="text" class="input input-bordered w-full" bind:value={subject} />
+				</div>
+			{/each}
 		</div>
-		<button type="submit" class="btn btn-accent w-full md:w-auto self-end">Go</button>
+		<button type="submit" class="btn btn-accent w-full mt-4">Go</button>
 	</form>
 </div>
