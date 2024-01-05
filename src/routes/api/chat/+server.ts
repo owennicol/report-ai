@@ -68,7 +68,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 			The report that you author should be provided in plain ASCII text, but the text should include the tags and annotations used in markdown. Each heading should have an h2 tag, and each paragraph should have an p tag.
 
-			The first line of the report should be in this template: Year R report for [child name], with only the child's name in bold.
+			The first line of the report should be in this template: <h1>Year R report for [child name]</h1>, with only the child's name in bold.
 
 			At the end of the report, include the following text:
 			"""<h2>Overall:</h2>

@@ -1,4 +1,4 @@
-import type { allSubjects } from "../utils/utils";
+import { allSubjects, possibleAssessments } from "../utils/utils";
 
 export type Subjects = (typeof allSubjects)[number]
-export type AllSubjects = Subjects[]
+export type PossibleAssessments = (typeof possibleAssessments)[number]

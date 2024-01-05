@@ -2,23 +2,25 @@
 	import ChatMessage from '$lib/components/ChatMessage.svelte'
 	import type { ChatCompletionRequestMessage } from 'openai'
 	import { SSE } from 'sse.js'
-	import { allSubjects } from '../utils/utils'
+	import { allSubjects, possibleAssessments } from '../utils/utils'
 	import type { Subjects } from '../types/types'
 
-	const initialAttributes = ['funny']
+	const initialAttribute = possibleAssessments[4]
 
-	const subjects = new Map<Subjects, string[]>()
+	let subjects = new Map<Subjects, string>()
 	allSubjects.forEach((subject) => {
-		subjects.set(subject, ['terrible'])
+		subjects.set(subject, initialAttribute)
 	})
 
 	let query: string = ''
-	let attributes: string[] = initialAttributes
+
 	let answer: string = ''
 	let loading: boolean = false
 	let chatMessages: ChatCompletionRequestMessage[] = []
 	let scrollToDiv: HTMLDivElement
 	let childName: string = ''
+
+	let eventSource: SSE
 
 	function scrollToBottom() {
 		setTimeout(function () {
@@ -27,12 +29,10 @@
 	}
 
 	const handleSubmit = async () => {
-		const subjectsString = [...subjects].reduce((acc, [subject, values]) => {
-			acc += `{${subject}: ${values.join(', ')}}, `
+		const subjectsString = [...subjects].reduce((acc, [subject, value]) => {
+			acc += `{${subject}: ${value}}, `
 			return acc
 		}, '')
-
-		console.log('====> subjectsString:', subjectsString)
 
 		loading = true
 		childName = query
@@ -41,15 +41,19 @@
 			{ role: 'user', content: `{ childName: ${childName}, ${subjectsString}}` }
 		]
 
-		const eventSource = new SSE('/api/chat', {
+		eventSource = new SSE('/api/chat', {
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			payload: JSON.stringify({ messages: chatMessages })
 		})
 
+		//reset values
 		query = ''
-		attributes = initialAttributes
+		subjects.forEach((_, key) => {
+			subjects.set(key, initialAttribute)
+		})
+		subjects = subjects
 
 		eventSource.addEventListener('error', handleError)
 
@@ -77,19 +81,30 @@
 		scrollToBottom()
 	}
 
+	function onDestroy() {
+		eventSource.close()
+	}
+
 	function handleError<T>(err: T) {
 		loading = false
 		query = ''
 		answer = ''
 		console.error(err)
 	}
+
+	function onChange(event: Event) {
+		const { name, value } = event.target as HTMLInputElement
+		subjects.set(name as Subjects, value)
+	}
 </script>
 
-<div class="flex flex-col pt-4 w-full px-8 items-center gap-2">
+<div class="flex flex-col pt-4 w-full px-4 md:px-8 items-center gap-2">
 	<div>
 		<h1 class="text-2xl font-bold w-full text-center">School Report AI</h1>
 	</div>
-	<div class="h-[500px] w-full bg-slate-600 rounded-md p-4 overflow-y-auto flex flex-col gap-4">
+	<div
+		class="h-[500px] w-full bg-slate-600 rounded-md p-4 overflow-y-auto flex flex-col gap-4 relative"
+	>
 		<div class="flex flex-col gap-2">
 			<ChatMessage
 				type="assistant"
@@ -108,6 +123,7 @@
 		</div>
 		<div class="" bind:this={scrollToDiv} />
 	</div>
+	<button class="btn" type="button" on:click={onDestroy}>Stop streaming</button>
 	<form
 		class="flex flex-col w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border dark:border-gray-900"
 		on:submit|preventDefault={() => handleSubmit()}
@@ -116,11 +132,20 @@
 			<label for="child-name" class="w-full mb-1 flex">Child's name:</label>
 			<input type="text" class="input input-bordered w-full" name="child-name" bind:value={query} />
 		</div>
-		<div class="grid grid-cols-2 gap-4 w-full">
+		<div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
 			{#each [...subjects] as [subject, value]}
 				<div class="flex flex-col flex-shrink-0">
 					<label for={subject} class="w-full mb-1 flex">{subject}:</label>
-					<input type="text" class="input input-bordered w-full" bind:value />
+					<select
+						class="input input-bordered w-full"
+						on:change={onChange}
+						name={subject}
+						bind:value
+					>
+						{#each possibleAssessments as assessment}
+							<option value={assessment}>{assessment}</option>
+						{/each}
+					</select>
 				</div>
 			{/each}
 		</div>
