@@ -48,13 +48,6 @@
 			payload: JSON.stringify({ messages: chatMessages })
 		})
 
-		//reset values
-		query = ''
-		subjects.forEach((_, key) => {
-			subjects.set(key, initialAttribute)
-		})
-		subjects = subjects
-
 		eventSource.addEventListener('error', handleError)
 
 		eventSource.addEventListener('message', (e) => {
@@ -83,6 +76,15 @@
 
 	function onDestroy() {
 		eventSource.close()
+	}
+
+	function resetForm() {
+		//reset values
+		query = ''
+		subjects.forEach((_, key) => {
+			subjects.set(key, initialAttribute)
+		})
+		subjects = subjects
 	}
 
 	function handleError<T>(err: T) {
@@ -123,7 +125,10 @@
 		</div>
 		<div class="" bind:this={scrollToDiv} />
 	</div>
-	<button class="btn" type="button" on:click={onDestroy}>Stop streaming</button>
+	<div class="flex gap-3">
+		<button class="btn" type="button" on:click={onDestroy}>Stop streaming</button>
+		<button class="btn btn-outline" type="button" on:click={resetForm}>Reset form</button>
+	</div>
 	<form
 		class="flex flex-col w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border dark:border-gray-900"
 		on:submit|preventDefault={() => handleSubmit()}
