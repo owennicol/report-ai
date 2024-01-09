@@ -47,6 +47,7 @@
 		"gpt3-tokenizer": "^1.1.5",
 		"openai": "^3.3.0",
 		"sse.js": "^0.6.1",
+		"svelte-copy": "^1.4.1",
 		"svelte-markdown": "^0.4.1"
 	}
 }

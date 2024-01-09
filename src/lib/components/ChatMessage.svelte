@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ChatCompletionRequestMessageRoleEnum } from 'openai'
 	import SvelteMarkdown from 'svelte-markdown'
+	export let copyContent: () => void = () => {}
 	export let type: ChatCompletionRequestMessageRoleEnum
 	export let message: string
 	export let showCopyButton: boolean = false
@@ -43,7 +44,7 @@
 				</button>
 			</div>
 			<div class="flex flex-1">
-				<button type="button" class="btn btn-sm btn-outline">
+				<button type="button" class="btn btn-sm btn-outline" on:click={copyContent}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"

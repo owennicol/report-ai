@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ChatMessage from '$lib/components/ChatMessage.svelte'
 	import type { ChatCompletionRequestMessage } from 'openai'
+	import { copyText } from 'svelte-copy'
 	import { SSE } from 'sse.js'
 	import { allSubjects, possibleAssessments } from '../utils/utils'
 	import type { Subjects } from '../types/types'
@@ -98,6 +99,10 @@
 		const { name, value } = event.target as HTMLInputElement
 		subjects.set(name as Subjects, value)
 	}
+
+	function copyContent(message: string) {
+		copyText(message)
+	}
 </script>
 
 <div class="flex flex-col pt-4 w-full px-4 md:px-8 items-center gap-2">
@@ -118,6 +123,7 @@
 					message={message.content || ''}
 					{childName}
 					showCopyButton={i === 1}
+					copyContent={() => copyContent(message.content || '')}
 				/>
 			{/each}
 			{#if answer}
