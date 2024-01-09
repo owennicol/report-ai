@@ -102,7 +102,7 @@
 
 <div class="flex flex-col pt-4 w-full px-4 md:px-8 items-center gap-2">
 	<div>
-		<h1 class="text-2xl font-bold w-full text-center">School Report AI</h1>
+		<h1 class="text-2xl font-bold w-full text-center mb-2">School Report AI</h1>
 	</div>
 	<div
 		class="h-[500px] w-full bg-slate-600 rounded-md p-4 overflow-y-auto flex flex-col gap-4 relative"
@@ -110,14 +110,18 @@
 		<div class="flex flex-col gap-2">
 			<ChatMessage
 				type="assistant"
-				message="Hello, please enter the child's full name and attributes"
+				message="Hello, please enter the child's full name and attainments"
 			/>
-			{#each chatMessages as message}
-				<ChatMessage type={message.role} message={message.content || ''} {childName} />
-				<!-- <SvelteMarkdown source={message.content} /> -->
+			{#each chatMessages as message, i}
+				<ChatMessage
+					type={message.role}
+					message={message.content || ''}
+					{childName}
+					showCopyButton={i === 1}
+				/>
 			{/each}
 			{#if answer}
-				<ChatMessage type="assistant" message={answer} />
+				<ChatMessage type="assistant" message={answer} showCopyButton />
 			{/if}
 			{#if loading}
 				<ChatMessage type="assistant" message="Loading.." />
