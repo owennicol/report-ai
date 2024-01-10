@@ -7,7 +7,7 @@ import markdown from "remark-parse";
 import docx from "remark-docx";
 import * as fs from "fs";
 
-
+// @ts-expect-error docx is expected and known about
 const processor = unified().use(markdown).use(docx, { output: "buffer" });
 
 export const config: Config = {
@@ -38,6 +38,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		})
 	} catch (err) {
 		console.error(err)
-		return json({ error: 'There was an error dealing with the Docx request' }, { status: 500 })
+		return json({ message: 'There was an error dealing with the Docx request', error: err }, { status: 500 })
 	}
 }
