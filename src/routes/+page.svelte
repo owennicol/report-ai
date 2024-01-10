@@ -119,6 +119,7 @@
 		})
 
 		const data = await response.json()
+		docXUrl = data?.url ?? ''
 	}
 </script>
 
