@@ -46,8 +46,11 @@
 	"dependencies": {
 		"gpt3-tokenizer": "^1.1.5",
 		"openai": "^3.3.0",
+		"remark-docx": "^0.1.6",
+		"remark-parse": "^11.0.0",
 		"sse.js": "^0.6.1",
 		"svelte-copy": "^1.4.1",
-		"svelte-markdown": "^0.4.1"
+		"svelte-markdown": "^0.4.1",
+		"unified": "^11.0.4"
 	}
 }

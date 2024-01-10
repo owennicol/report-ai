@@ -3,6 +3,7 @@
 	import type { ChatCompletionRequestMessage } from 'openai'
 	import { copyText } from 'svelte-copy'
 	import { SSE } from 'sse.js'
+
 	import { allSubjects, possibleAssessments } from '../utils/utils'
 	import type { Subjects } from '../types/types'
 
@@ -103,6 +104,22 @@
 	function copyContent(message: string) {
 		copyText(message)
 	}
+
+	async function sendDocX(message: string) {
+		const response = await fetch('/api/docx', {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify({
+				message,
+				childName
+			})
+		})
+
+		const data = await response.json()
+		console.log('====> data:', data)
+	}
 </script>
 
 <div class="flex flex-col pt-4 w-full px-4 md:px-8 items-center gap-2">
@@ -124,6 +141,7 @@
 					{childName}
 					showCopyButton={i === 1}
 					copyContent={() => copyContent(message.content || '')}
+					sendDocX={() => sendDocX(message.content || '')}
 				/>
 			{/each}
 			{#if answer}
