@@ -21,6 +21,7 @@
 	let chatMessages: ChatCompletionRequestMessage[] = []
 	let scrollToDiv: HTMLDivElement
 	let childName: string = ''
+	let docXUrl: string = ''
 
 	let eventSource: SSE
 
@@ -118,7 +119,6 @@
 		})
 
 		const data = await response.json()
-		console.log('====> data:', data)
 	}
 </script>
 
@@ -157,6 +157,9 @@
 		<button class="btn" type="button" on:click={onDestroy}>Stop streaming</button>
 		<button class="btn btn-outline" type="button" on:click={resetForm}>Reset form</button>
 	</div>
+	{#if docXUrl}
+		<p><a href={docXUrl}>Download report for {childName}</a></p>
+	{/if}
 	<form
 		class="flex flex-col w-full rounded-md gap-4 bg-white dark:bg-gray-800 p-4 align-middle items-center border dark:border-gray-900"
 		on:submit|preventDefault={() => handleSubmit()}
