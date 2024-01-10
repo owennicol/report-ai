@@ -6,6 +6,8 @@ import { unified } from "unified";
 import markdown from "remark-parse";
 import docx from "remark-docx";
 import * as fs from "fs";
+import { put } from "@vercel/blob";
+
 
 // @ts-expect-error docx is expected and known about
 const processor = unified().use(markdown).use(docx, { output: "buffer" });
@@ -29,9 +31,13 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const doc = await processor.process(message);
 		const buffer = await doc.result as Buffer;
-		fs.writeFileSync(`${childName}.docx`, buffer);
+		// fs.writeFileSync(`${childName}.docx`, buffer);
 
-		return new Response(JSON.stringify({ message: 'Success' }), {
+		const { url } = await put(`reports/${childName}.docx`, buffer, { access: 'public' });
+
+
+
+		return new Response(JSON.stringify({ message: 'Success', url}), {
 			headers: {
 				'Content-Type': 'text/json'
 			}

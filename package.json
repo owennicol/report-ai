@@ -44,6 +44,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/blob": "^0.16.1",
 		"gpt3-tokenizer": "^1.1.5",
 		"openai": "^3.3.0",
 		"remark-docx": "^0.1.6",
