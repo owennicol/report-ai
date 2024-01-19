@@ -29,7 +29,11 @@
 	{#if showCopyButton}
 		<div class="tools flex gap-4 align-middle justify-center flex-col">
 			<div class="flex flex-1">
-				<button type="button" class="btn btn-sm btn-outline" on:click={sendDocX}>
+				<button
+					type="button"
+					class="btn btn-sm btn-outline border-blue-200 text-blue-200"
+					on:click={sendDocX}
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
@@ -45,7 +49,11 @@
 				</button>
 			</div>
 			<div class="flex flex-1">
-				<button type="button" class="btn btn-sm btn-outline" on:click={copyContent}>
+				<button
+					type="button"
+					class="btn btn-sm btn-outline border-blue-200 text-blue-200"
+					on:click={copyContent}
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="24"
